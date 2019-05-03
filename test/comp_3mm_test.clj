@@ -104,15 +104,20 @@
          6 7 8)))
 
 (deftest allowed?
-  (let [first-six-moves [[nil 0] [nil 1] [nil 2]
-                         [nil 3] [nil 4] [nil 5]]]
+  (let [first-six-moves (map vector
+                             (repeat nil)
+                             [0 1 2
+                              3 4 5])]
     (testing "adjacent move is allowed"
       (is (sut/allowed? first-six-moves 4 7)))
     (testing "should not be able to move something to itself"
       (is (not (sut/allowed? first-six-moves 0 0))))
-    (testing "should not be able to move something to an occupied spot")
-    (testing "should not be able to move a piece you don't own")
-    (testing "should not be able to move an unoccupied piece")))
+    (testing "should not be able to move something to an occupied spot"
+      (is (not (sut/allowed? first-six-moves 0 1))))
+    (testing "should not be able to move a piece you don't own"
+      (is (not (sut/allowed? first-six-moves 5 8))))
+    (testing "should not be able to move an unoccupied piece"
+      (is (not (sut/allowed? first-six-moves 8 7))))))
 
 (deftest get-board
   (let [first-six-moves [[nil 0] [nil 1] [nil 2]

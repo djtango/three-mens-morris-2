@@ -85,22 +85,32 @@
         (-> from down left =to
             (and (not (left-edge from)))))))
 
+(def white-player (partial get-player even?)) ;; 0-indexed
+(def black-player (partial get-player odd?))
+
 (defn occupied? [state posn]
   (contains? (latest-positions state) posn))
+
+(defn owns-piece? [state from]
+  (let [player (if (even? (count state))
+                 white-player
+                 black-player)]
+    (-> state
+        player
+        latest-positions
+        (contains? from))))
 
 (defn allowed? [state from to]
   (and (occupied? state from)
        (not (occupied? state to))
-       (adjacent? from to)))
+       (adjacent? from to)
+       (owns-piece? state from)))
 
 (defn get-player [selector state]
   (->> state
        (map-indexed vector)
        (filter (comp selector first))
        (map second)))
-
-(def white-player (partial get-player even?)) ;; 0-indexed
-(def black-player (partial get-player odd?))
 
 (defn set-pieces [state k current-board]
   (let [select-player (if (= k :white)
@@ -149,7 +159,7 @@
           (reset! new-position (parse-input (read-line)))
           (if (and (s/valid? ::position @piece-to-move)
                    (s/valid? ::position @new-position)
-                   (allowed? @piece-to-move @new-position))
+                   (allowed? state @piece-to-move @new-position))
             [@piece-to-move @new-position]
             (get-move state))))))
 

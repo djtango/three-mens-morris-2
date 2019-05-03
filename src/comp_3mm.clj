@@ -99,8 +99,8 @@
        (filter (comp selector first))
        (map second)))
 
-(def white-player (partial get-player odd?))
-(def black-player (partial get-player even?))
+(def white-player (partial get-player even?)) ;; 0-indexed
+(def black-player (partial get-player odd?))
 
 (defn set-pieces [state k current-board]
   (let [select-player (if (= k :white)

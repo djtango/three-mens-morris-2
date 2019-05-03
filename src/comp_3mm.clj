@@ -8,9 +8,8 @@
 
 (defn current-player [moves]
   (let [white-or-black (if (odd? (count moves))
-                         even? ;; white
-                         odd? ;; black
-                         )]
+                         even?  ;; white
+                         odd?)] ;; black
     (->> moves
          (map-indexed (fn [idx itm]
                         (if (white-or-black idx)

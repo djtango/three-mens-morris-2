@@ -1,0 +1,9 @@
+{:deps {}
+ :paths ["src"]
+ :aliases {:test
+           {:extra-paths ["test"]
+            :extra-deps {
+                         ;;org.clojure/test.check {:mvn/version "0.9.0"}
+                         ;;orchestra {:mvn/version "2018.09.10-1"}
+                         }}}}
+

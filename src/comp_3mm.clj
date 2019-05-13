@@ -85,6 +85,13 @@
         (-> from down left =to
             (and (not (left-edge from)))))))
 
+
+(defn get-player [selector state]
+  (->> state
+       (map-indexed vector)
+       (filter (comp selector first))
+       (map second)))
+
 (def white-player (partial get-player even?)) ;; 0-indexed
 (def black-player (partial get-player odd?))
 
@@ -105,12 +112,6 @@
        (not (occupied? state to))
        (adjacent? from to)
        (owns-piece? state from)))
-
-(defn get-player [selector state]
-  (->> state
-       (map-indexed vector)
-       (filter (comp selector first))
-       (map second)))
 
 (defn set-pieces [state k current-board]
   (let [select-player (if (= k :white)
